@@ -552,6 +552,12 @@ def _register_page() -> None:
         ui.add_head_html(
             '''
             <style>
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                    min-height: 100%;
+                }
                 body {
                     background: #f3f4f6;
                     color: #111827;
@@ -569,8 +575,45 @@ def _register_page() -> None:
                     color: #f9fafb;
                     border-bottom: 1px solid rgba(148, 163, 184, 0.18);
                 }
+                .nicegui-content {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    gap: 0 !important;
+                    width: 100% !important;
+                    max-width: none !important;
+                }
+                .q-page {
+                    padding: 0 !important;
+                }
                 .buddy-app-bg {
                     background: transparent;
+                }
+                .buddy-main-full {
+                    width: 100%;
+                    height: calc(100dvh - 64px);
+                    min-height: calc(100dvh - 64px);
+                    margin: 0;
+                    padding: 0;
+                    overflow: hidden;
+                }
+                .buddy-map-card-full {
+                    width: 100%;
+                    height: 100%;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    background: transparent !important;
+                    border: 0 !important;
+                    box-shadow: none !important;
+                    border-radius: 0 !important;
+                    overflow: hidden !important;
+                }
+                .buddy-map-full {
+                    width: 100%;
+                    height: 100%;
+                    margin: 0 !important;
+                    border: 0 !important;
+                    border-radius: 0 !important;
+                    display: block !important;
                 }
                 .buddy-surface {
                     background: #ffffff;
@@ -1891,10 +1934,11 @@ def _register_page() -> None:
             ui.space()
             theme_button = ui.button(icon='dark_mode', on_click=toggle_theme).props('flat round color=white')
 
-        with ui.column().classes('buddy-app-bg w-full max-w-7xl mx-auto p-4 gap-4'):
-            with ui.card().classes('buddy-surface w-full rounded-2xl shadow-sm'):
-                ui.label('Karte').classes('text-lg font-semibold buddy-text-primary')
-                radar_map = ui.leaflet(center=(48.137154, 11.576124), zoom=6).classes('w-full h-[78vh] rounded-xl')
+        with ui.column().classes('buddy-app-bg buddy-main-full'):
+            with ui.card().classes('buddy-map-card-full'):
+                radar_map = ui.leaflet(center=(48.137154, 11.576124), zoom=6).classes(
+                    'buddy-map-full'
+                )
                 radar_map.on('map-click', handle_map_click)
 
         await radar_map.initialized()
